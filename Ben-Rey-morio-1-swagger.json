@@ -196,7 +196,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DistanceResponse"
+                  "$ref": "#/components/definitions/DistanceResponse"
                 }
               }
             }
@@ -273,7 +273,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CountResponse"
+                  "$ref": "#/components/definitions/CountResponse"
                 }
               }
             }
@@ -304,7 +304,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BikeStolenList"
+                "$ref": "#/components/definitions/BikeStolenList"
               }
             }
           }
@@ -351,7 +351,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PositionResponse"
+                  "$ref": "#/components/definitions/PositionResponse"
                 }
               }
             }
@@ -985,6 +985,83 @@
             "type": "string",
             "format": "string",
             "example": "Alert name not found"
+          }
+        }
+      }
+    },
+    "definitions": {
+      "BikeDescription": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "format": "string",
+            "example": "00300456"
+          },
+          "device_name": {
+            "type": "string",
+            "format": "string",
+            "example": "Poulidor"
+          },
+          "device_information": {
+            "type": "string",
+            "format": "string",
+            "example": "Velo 40"
+          }
+        }
+      },
+      "BikeId": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "format": "string",
+            "example": "00300456"
+          }
+        }
+      },
+      "DistanceResponse": {
+        "type": "object",
+        "properties": {
+          "distance": {
+            "type": "integer",
+            "format": "int32",
+            "example": 20
+          }
+        }
+      },
+      "CountResponse": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "exits": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          }
+        }
+      },
+      "PositionResponse": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "example": 43.577205
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "example": 1.47676
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1597391346
           }
         }
       }
