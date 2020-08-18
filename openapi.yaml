@@ -4,418 +4,459 @@ info:
   description: API for connecting Morio service to your back office
   version: "1"
 servers:
-- url: https://virtserver.swaggerhub.com/Ben-Rey/morio/1
-  description: SwaggerHub API Auto Mocking
-- url: https://{workspace}.api.web.morio.co/developers
-  variables:
-    workspace:
-      description: workspace assigned by Morio
-      default: demo
+  - url: https://virtserver.swaggerhub.com/Ben-Rey/morio/1
+    description: SwaggerHub API Auto Mocking
+  - url: https://{workspace}.api.web.morio.co/developers
+    variables:
+      workspace:
+        description: workspace assigned by Morio
+        default: demo
 paths:
   /bike/create-device:
     post:
+      security:
+        - ApiKeyAuth: []
       tags:
-      - Bike
+        - Bike
       summary: Add new bikes
-      parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BikeCreationList'
+              $ref: "#/components/schemas/BikeCreationList"
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_201'
+                $ref: "#/components/schemas/inline_response_201"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
         "404":
           description: Not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404'
+                $ref: "#/components/schemas/inline_response_404"
+
   /bike/delete-device:
     delete:
       tags:
-      - Bike
+        - Bike
       summary: Delete bikes
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BikeList'
+              $ref: "#/components/schemas/BikeDeleteList"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_1'
+                $ref: "#/components/schemas/inline_response_404_1"
   /bike/distance/:
     get:
       tags:
-      - Bike
+        - Bike
       summary: Get distance between two timestamps
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-      - name: device_id
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: begin_timestamp
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          minimum: 0
-          type: integer
-          format: int32
-      - name: end_timestamp
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          minimum: 0
-          type: integer
-          format: int32
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
+        - name: device_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: begin_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: end_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
       responses:
         "200":
           description: response
           content:
             application/json:
               schema:
-                $ref: '#/definitions/DistanceResponse'
+                $ref: "#/components/schemas/DistanceResponse"
   /bike/zone-traffic:
     get:
       tags:
-      - Bike
+        - Bike
       summary: Count bike zone entries and exits
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-      - name: device_id
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: group
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: begin_timestamp
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          minimum: 0
-          type: integer
-          format: int32
-      - name: end_timestamp
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          minimum: 0
-          type: integer
-          format: int32
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
+        - name: device_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: begin_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: end_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
       responses:
         "200":
           description: response
           content:
             application/json:
               schema:
-                $ref: '#/definitions/CountResponse'
+                $ref: "#/components/schemas/CountResponse"
   /bike/stolen-device:
     post:
       tags:
-      - Bike
+        - Bike
       summary: Report bike stolen or found
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BikeStolenList'
+              $ref: "#/components/schemas/BikeStolenList"
       responses:
         "200":
           description: Bike stolen or found
   /bike/last-position/:
     get:
       tags:
-      - Bike
+        - Bike
       summary: Get device last position
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-      - name: device_id
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
+        - name: device_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/definitions/PositionResponse'
+                $ref: "#/components/schemas/PositionResponse"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_2'
+                $ref: "#/components/schemas/inline_response_404_2"
   /group/create-group-with-geofencing-alerts:
     post:
       tags:
-      - Group
+        - Group
       summary: Add new group with geofencing
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupCreation'
+              $ref: "#/components/schemas/GroupCreation"
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_201_1'
+                $ref: "#/components/schemas/inline_response_201_1"
         "409":
           description: Conflict
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_409'
+                $ref: "#/components/schemas/inline_response_409"
   /group/delete-group-with-alert:
     delete:
       tags:
-      - Group
+        - Group
       summary: Delete group
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Group'
+              $ref: "#/components/schemas/Group"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: "#/components/schemas/inline_response_200_1"
         "404":
           description: Not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_3'
+                $ref: "#/components/schemas/inline_response_404_3"
   /group/add-devices-in-group:
     post:
       tags:
-      - Group
+        - Group
       summary: Add bikes inside a group
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddBikesList'
+              $ref: "#/components/schemas/AddBikesList"
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_201_2'
+                $ref: "#/components/schemas/inline_response_201_2"
         "404":
           description: Not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_3'
+                $ref: "#/components/schemas/inline_response_404_3"
   /group/remove-devices-from-group:
     post:
       tags:
-      - Group
+        - Group
       summary: Remove bikes from a group
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddBikesList'
+              $ref: "#/components/schemas/AddBikesList"
       responses:
         "200":
           description: All bikes removed
   /alert/create-alert:
     post:
       tags:
-      - Alert
+        - Alert
       summary: Create new alert
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AlertCreation'
+              $ref: "#/components/schemas/AlertCreation"
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_201_3'
+                $ref: "#/components/schemas/inline_response_201_3"
   /alert/delete-alert:
     delete:
       tags:
-      - Alert
+        - Alert
       summary: Delete alert
       parameters:
-      - name: X-MASTER-API-KEY
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
+        - name: X-MASTER-API-KEY
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AlertName'
+              $ref: "#/components/schemas/AlertName"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_2'
+                $ref: "#/components/schemas/inline_response_200_2"
         "404":
           description: Not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_4'
+                $ref: "#/components/schemas/inline_response_404_4"
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+
   schemas:
+    BikeCreation:
+      type: object
+      properties:
+        device_id:
+          type: string
+          format: string
+          example: 330012
+        device_name:
+          type: string
+          format: string
+          example: Poulidor
+        device_information:
+          type: string
+          format: string
+          example: information
     BikeCreationList:
       type: object
       properties:
         devices:
           type: array
           items:
-            $ref: '#/definitions/BikeDescription'
+            $ref: "#/components/schemas/BikeCreation"
+    BikeDelete:
+      type: object
+      properties:
+        device_id:
+          type: string
+          format: string
+          example: 330012
+    BikeDeleteList:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: "#/components/schemas/BikeDelete"
     AddBikesList:
       type: object
       properties:
@@ -426,14 +467,14 @@ components:
         devices:
           type: array
           items:
-            $ref: '#/definitions/BikeId'
+            $ref: "#/components/schemas/BikeStolenList"
     BikeList:
       type: object
       properties:
         devices:
           type: array
           items:
-            $ref: '#/definitions/BikeId'
+            $ref: "#/components/schemas/BikeStolenList"
     BikeStolenList:
       type: object
       properties:
@@ -520,6 +561,14 @@ components:
           type: string
           format: string
           example: device X has been created
+
+    inline_response_400:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: X key is missing
     inline_response_404:
       type: object
       properties:
