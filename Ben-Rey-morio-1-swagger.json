@@ -1,0 +1,874 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "version" : "1",
+    "title" : "Morio-api",
+    "description" : "API for connecting Morio service to your back office"
+  },
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/Ben-Rey/morio/1"
+  }, {
+    "url" : "https://{workspace}.api.web.morio.co/developers",
+    "variables" : {
+      "workspace" : {
+        "default" : "demo",
+        "description" : "workspace assigned by Morio"
+      }
+    }
+  } ],
+  "paths" : {
+    "/bike/create-device" : {
+      "post" : {
+        "tags" : [ "Bike" ],
+        "summary" : "Add new bikes",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BikeCreationList"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "device X has been created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "devices X were already created. Others have been created"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bike/delete-device" : {
+      "delete" : {
+        "tags" : [ "Bike" ],
+        "summary" : "Delete bikes",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BikeList"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "devices deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "devices X not found. Others are deleted"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bike/distance/" : {
+      "get" : {
+        "tags" : [ "Bike" ],
+        "summary" : "Get distance between two timestamps",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        }, {
+          "name" : "device_id",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "begin_timestamp",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 0,
+            "format" : "int32"
+          }
+        }, {
+          "name" : "end_timestamp",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 0,
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/definitions/DistanceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bike/zone-traffic" : {
+      "get" : {
+        "tags" : [ "Bike" ],
+        "summary" : "Count bike zone entries and exits",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        }, {
+          "name" : "device_id",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "group",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "begin_timestamp",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 0,
+            "format" : "int32"
+          }
+        }, {
+          "name" : "end_timestamp",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 0,
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/definitions/CountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bike/stolen-device" : {
+      "post" : {
+        "tags" : [ "Bike" ],
+        "summary" : "Report bike stolen or found",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BikeStolenList"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Bike stolen or found"
+          }
+        }
+      }
+    },
+    "/bike/last-position/" : {
+      "get" : {
+        "tags" : [ "Bike" ],
+        "summary" : "Get device last position",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        }, {
+          "name" : "device_id",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/definitions/PositionResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "device_id not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group/create-group-with-geofencing-alerts" : {
+      "post" : {
+        "tags" : [ "Group" ],
+        "summary" : "Add new group with geofencing",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GroupCreation"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "group created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Conflict",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "A group with this name already exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group/delete-group-with-alert" : {
+      "delete" : {
+        "tags" : [ "Group" ],
+        "summary" : "Delete group",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Group"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "Group deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "Group name not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group/add-devices-in-group" : {
+      "post" : {
+        "tags" : [ "Group" ],
+        "summary" : "Add bikes inside a group",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AddBikesList"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "devices addes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "Group name not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group/remove-devices-from-group" : {
+      "post" : {
+        "tags" : [ "Group" ],
+        "summary" : "Remove bikes from a group",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AddBikesList"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "All bikes removed"
+          }
+        }
+      }
+    },
+    "/alert/create-alert" : {
+      "post" : {
+        "tags" : [ "Alert" ],
+        "summary" : "Create new alert",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlertCreation"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "alert created"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alert/delete-alert" : {
+      "delete" : {
+        "tags" : [ "Alert" ],
+        "summary" : "Delete alert",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-MASTER-API-KEY",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlertName"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "alert deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string",
+                      "format" : "string",
+                      "example" : "Alert name not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "BikeCreationList" : {
+        "type" : "object",
+        "properties" : {
+          "devices" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/BikeDescription"
+            }
+          }
+        }
+      },
+      "AddBikesList" : {
+        "type" : "object",
+        "properties" : {
+          "group_name" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "Entreprise"
+          },
+          "devices" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/BikeId"
+            }
+          }
+        }
+      },
+      "BikeList" : {
+        "type" : "object",
+        "properties" : {
+          "devices" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/BikeId"
+            }
+          }
+        }
+      },
+      "BikeStolenList" : {
+        "type" : "object",
+        "properties" : {
+          "device_id" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "00300456"
+          },
+          "device_name" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "Poulidor"
+          },
+          "device_stolen" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "true"
+          },
+          "email" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "adrien@morio.co"
+          }
+        }
+      },
+      "GroupCreation" : {
+        "type" : "object",
+        "properties" : {
+          "group_name" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "Entreprise"
+          },
+          "latitude" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : 43.577205
+          },
+          "longitude" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : 1.47676
+          },
+          "radius" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 3
+          }
+        }
+      },
+      "Group" : {
+        "type" : "object",
+        "properties" : {
+          "group_name" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "Entreprise"
+          }
+        }
+      },
+      "AlertCreation" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "position"
+          },
+          "alert_name" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "Zone4"
+          },
+          "latitude" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : 43.577205
+          },
+          "longitude" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : 1.47676
+          },
+          "radius" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 3
+          },
+          "group_name" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "Parc"
+          }
+        }
+      },
+      "AlertName" : {
+        "type" : "object",
+        "properties" : {
+          "alert_name" : {
+            "type" : "string",
+            "format" : "string",
+            "example" : "Zone4"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "BikeDescription" : {
+      "type" : "object",
+      "properties" : {
+        "device_id" : {
+          "type" : "string",
+          "format" : "string",
+          "example" : "00300456"
+        },
+        "device_name" : {
+          "type" : "string",
+          "format" : "string",
+          "example" : "Poulidor"
+        },
+        "device_information" : {
+          "type" : "string",
+          "format" : "string",
+          "example" : "Velo 40"
+        }
+      }
+    },
+    "BikeId" : {
+      "type" : "object",
+      "properties" : {
+        "device_id" : {
+          "type" : "string",
+          "format" : "string",
+          "example" : "00300456"
+        }
+      }
+    },
+    "DistanceResponse" : {
+      "type" : "object",
+      "properties" : {
+        "distance" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 20
+        }
+      }
+    },
+    "CountResponse" : {
+      "type" : "object",
+      "properties" : {
+        "entries" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 1
+        },
+        "exits" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 1
+        }
+      }
+    },
+    "PositionResponse" : {
+      "type" : "object",
+      "properties" : {
+        "latitude" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : 43.577205
+        },
+        "longitude" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : 1.47676
+        },
+        "timestamp" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 1597391346
+        }
+      }
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/AdrienMorio/Morio/1.0.0",
+  "schemes" : [ "https" ]
+}
