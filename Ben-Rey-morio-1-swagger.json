@@ -196,7 +196,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DistanceResponse"
+                  "$ref": "#/components/definitions/DistanceResponse"
                 }
               }
             }
