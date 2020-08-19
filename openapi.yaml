@@ -4,8 +4,6 @@ info:
   description: API for connecting Morio service to your back office
   version: "1"
 servers:
-  - url: https://virtserver.swaggerhub.com/Ben-Rey/morio/1
-    description: SwaggerHub API Auto Mocking
   - url: https://{workspace}.api.web.morio.co/developers
     variables:
       workspace:
@@ -30,34 +28,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_201"
+                $ref: "#/components/schemas/device_created_response_201"
         "400":
-          description: Bad request
+          description: A key in the json data is missing
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: "#/components/schemas/error_key_missing_response_400"
         "404":
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: "#/components/schemas/device_created_error_response_404"
 
   /bike/delete-device:
     delete:
       tags:
         - Bike
       summary: Delete bikes
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -71,38 +62,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/inline_response_200"
         "400":
-          description: Bad request
+          description: A key in the json data is missing
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: "#/components/schemas/error_key_missing_response_400"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_1"
+                $ref: "#/components/schemas/device_delete_404"
   /bike/distance/:
     get:
       tags:
         - Bike
       summary: Get distance between two timestamps
+      security:
+        - ApiKeyAuth: []
       parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-        - name: device_id
+        - name: device_id(s)
           in: query
           required: true
           style: form
           explode: true
           schema:
             type: string
+          description: comma separated
         - name: begin_timestamp
           in: query
           required: true
@@ -128,20 +114,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DistanceResponse"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "403":
+          description: Limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/distance_error_403"
+
+  ####### CHECK ######
+
   /bike/zone-traffic:
     get:
       tags:
         - Bike
       summary: Count bike zone entries and exits
+      security:
+        - ApiKeyAuth: []
       parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
         - name: device_id
           in: query
           required: true
@@ -181,20 +176,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CountResponse"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
   /bike/stolen-device:
     post:
       tags:
         - Bike
       summary: Report bike stolen or found
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -208,15 +202,9 @@ paths:
       tags:
         - Bike
       summary: Get device last position
+      security:
+        - ApiKeyAuth: []
       parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
         - name: device_id
           in: query
           required: true
@@ -242,15 +230,8 @@ paths:
       tags:
         - Group
       summary: Add new group with geofencing
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -274,15 +255,8 @@ paths:
       tags:
         - Group
       summary: Delete group
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -306,15 +280,8 @@ paths:
       tags:
         - Group
       summary: Add bikes inside a group
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -338,15 +305,8 @@ paths:
       tags:
         - Group
       summary: Remove bikes from a group
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -355,20 +315,32 @@ paths:
       responses:
         "200":
           description: All bikes removed
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/group_name_not_found_404"
+  #        "404":
+  #          description: If some devices ids not found
+  #          content:
+  #            application/json:
+  #              schema:
+  #                $ref: "#/components/schemas/device_remove_from_group_404"
+
   /alert/create-alert:
     post:
       tags:
         - Alert
       summary: Create new alert
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -386,15 +358,8 @@ paths:
       tags:
         - Alert
       summary: Delete alert
-      parameters:
-        - name: X-MASTER-API-KEY
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
+      security:
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -464,13 +429,6 @@ components:
           type: string
           format: string
           example: Entreprise
-        devices:
-          type: array
-          items:
-            $ref: "#/components/schemas/BikeStolenList"
-    BikeList:
-      type: object
-      properties:
         devices:
           type: array
           items:
@@ -554,28 +512,41 @@ components:
           type: string
           format: string
           example: Zone4
-    inline_response_201:
-      type: object
-      properties:
-        message:
-          type: string
-          format: string
-          example: device X has been created
 
-    inline_response_400:
+    # RESPONSES
+    # GENERIC
+    error_key_missing_response_400:
       type: object
       properties:
         message:
           type: string
           format: string
           example: X key is missing
-    inline_response_404:
+    group_name_not_found_404:
       type: object
       properties:
         message:
           type: string
           format: string
-          example: devices X were already created. Others have been created
+          example: Group name not found
+
+    # DEVICE CREATE
+    device_created_response_201:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: device(s) has been created
+    device_created_error_response_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: devices X was/were already created. If there were others, they were created.
+
+    # DEVICE DELETE
     inline_response_200:
       type: object
       properties:
@@ -583,13 +554,33 @@ components:
           type: string
           format: string
           example: devices deleted
-    inline_response_404_1:
+    device_delete_404:
       type: object
       properties:
         message:
           type: string
           format: string
-          example: devices X not found. Others are deleted
+          example: devices X not found. If there were others, they were deleted.
+    # LAST POSITION
+    PositionResponse:
+      type: object
+      properties:
+        device_reference:
+          type: string
+          format: string
+          example: XXXXXX
+        latitude:
+          type: number
+          format: double
+          example: 43.577205
+        longitude:
+          type: number
+          format: double
+          example: 1.476760
+        timestamp:
+          type: integer
+          format: int32
+          example: 1597391346
     inline_response_404_2:
       type: object
       properties:
@@ -597,6 +588,8 @@ components:
           type: string
           format: string
           example: device_id not found
+
+    # CREATE GROUP WITH GEOFENCING
     inline_response_201_1:
       type: object
       properties:
@@ -611,6 +604,8 @@ components:
           type: string
           format: string
           example: A group with this name already exists
+
+    # DELETE GROUP WITH ALERT
     inline_response_200_1:
       type: object
       properties:
@@ -618,6 +613,7 @@ components:
           type: string
           format: string
           example: Group deleted
+    # ADD DEVICE IN GROUP
     inline_response_404_3:
       type: object
       properties:
@@ -631,7 +627,18 @@ components:
         message:
           type: string
           format: string
-          example: devices addes
+          example: devices added
+
+    # REMOVE DEVICE FROM GROUP
+    device_remove_from_group_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: devices X not found. If there were others, they were deleted.
+
+    # CREATE ALERT
     inline_response_201_3:
       type: object
       properties:
@@ -639,6 +646,7 @@ components:
           type: string
           format: string
           example: alert created
+    # DELETE ALERT
     inline_response_200_2:
       type: object
       properties:
@@ -653,6 +661,38 @@ components:
           type: string
           format: string
           example: Alert name not found.
+    # DISTANCE
+    DistanceResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          format: int32
+          items:
+            $ref: "#/components/schemas/BikeCreation"
+          example: [{ "id": "30134B", "distance": 20 }]
+
+    distance_error_403:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: "limit exceeded ( 1 - 100 ) you gave X "
+
+    # ZONE IN OUT
+    CountResponse:
+      type: object
+      properties:
+        entries:
+          type: integer
+          format: int32
+          example: 1
+        exits:
+          type: integer
+          format: int32
+          example: 1
+
     BikeDescription:
       type: object
       properties:
@@ -675,36 +715,10 @@ components:
           type: string
           format: string
           example: "00300456"
-    DistanceResponse:
+    BikeList:
       type: object
       properties:
-        distance:
-          type: integer
-          format: int32
-          example: 20
-    CountResponse:
-      type: object
-      properties:
-        entries:
-          type: integer
-          format: int32
-          example: 1
-        exits:
-          type: integer
-          format: int32
-          example: 1
-    PositionResponse:
-      type: object
-      properties:
-        latitude:
-          type: number
-          format: double
-          example: 43.577205
-        longitude:
-          type: number
-          format: double
-          example: 1.476760
-        timestamp:
-          type: integer
-          format: int32
-          example: 1597391346
+        devices:
+          type: array
+          items:
+            $ref: "#/components/schemas/BikeStolenList"
