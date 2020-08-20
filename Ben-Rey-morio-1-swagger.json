@@ -185,7 +185,7 @@
             }
           },
           "400": {
-            "description": "A key in the json data is missing",
+            "description": "A key in the parameters is missing",
             "content": {
               "application/json": {
                 "schema": {
@@ -276,11 +276,21 @@
             }
           },
           "400": {
-            "description": "A key in the json data is missing",
+            "description": "A key in the parameters is missing",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/error_key_missing_response_400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_id_not_found_404"
                 }
               }
             }
@@ -311,6 +321,26 @@
         "responses": {
           "200": {
             "description": "Bike stolen or found"
+          },
+          "400": {
+            "description": "A key in the json data is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_id_not_found_404"
+                }
+              }
+            }
           }
         }
       }
@@ -349,12 +379,22 @@
               }
             }
           },
+          "400": {
+            "description": "A parameter is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_404_2"
+                  "$ref": "#/components/schemas/device_id_not_found_404"
                 }
               }
             }
@@ -437,6 +477,16 @@
               }
             }
           },
+          "400": {
+            "description": "A parameter is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not found",
             "content": {
@@ -477,6 +527,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/inline_response_201_2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A key in the json data is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
                 }
               }
             }
@@ -571,6 +631,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "A key in the json data is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
+                }
+              }
+            }
           }
         }
       }
@@ -602,6 +672,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
                 }
               }
             }
@@ -822,6 +902,16 @@
           }
         }
       },
+      "device_id_not_found_404": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "format": "string",
+            "example": "device_id not found"
+          }
+        }
+      },
       "device_created_response_201": {
         "type": "object",
         "properties": {
@@ -884,16 +974,6 @@
             "type": "integer",
             "format": "int32",
             "example": 1597391346
-          }
-        }
-      },
-      "inline_response_404_2": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "device_id not found"
           }
         }
       },

@@ -115,7 +115,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/DistanceResponse"
         "400":
-          description: A key in the json data is missing
+          description: A key in the parameters is missing
           content:
             application/json:
               schema:
@@ -126,8 +126,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/distance_error_403"
-
-  ####### CHECK ######
 
   /bike/zone-traffic:
     get:
@@ -177,11 +175,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/CountResponse"
         "400":
-          description: A key in the json data is missing
+          description: A key in the parameters is missing
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_id_not_found_404"
+
   /bike/stolen-device:
     post:
       tags:
@@ -197,6 +202,19 @@ paths:
       responses:
         "200":
           description: Bike stolen or found
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_id_not_found_404"
+
   /bike/last-position/:
     get:
       tags:
@@ -219,12 +237,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PositionResponse"
+        "400":
+          description: A parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_2"
+                $ref: "#/components/schemas/device_id_not_found_404"
+
   /group/create-group-with-geofencing-alerts:
     post:
       tags:
@@ -250,6 +275,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_409"
+
   /group/delete-group-with-alert:
     delete:
       tags:
@@ -269,12 +295,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_200_1"
+        "400":
+          description: A parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
         "404":
           description: Not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_404_3"
+
+  ####### CHECK ######
+
   /group/add-devices-in-group:
     post:
       tags:
@@ -294,12 +329,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_201_2"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
         "404":
           description: Not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_404_3"
+
   /group/remove-devices-from-group:
     post:
       tags:
@@ -327,12 +369,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/group_name_not_found_404"
-  #        "404":
-  #          description: If some devices ids not found
-  #          content:
-  #            application/json:
-  #              schema:
-  #                $ref: "#/components/schemas/device_remove_from_group_404"
 
   /alert/create-alert:
     post:
@@ -353,6 +389,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_201_3"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+
+  ####### CHECK ######
+
   /alert/delete-alert:
     delete:
       tags:
@@ -372,6 +417,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_200_2"
+        "400":
+          description: A parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
         "404":
           description: Not found
           content:
@@ -530,6 +581,14 @@ components:
           format: string
           example: Group name not found
 
+    device_id_not_found_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: device_id not found
+
     # DEVICE CREATE
     device_created_response_201:
       type: object
@@ -581,13 +640,6 @@ components:
           type: integer
           format: int32
           example: 1597391346
-    inline_response_404_2:
-      type: object
-      properties:
-        message:
-          type: string
-          format: string
-          example: device_id not found
 
     # CREATE GROUP WITH GEOFENCING
     inline_response_201_1:
