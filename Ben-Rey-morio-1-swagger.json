@@ -955,7 +955,7 @@
       "PositionResponse": {
         "type": "object",
         "properties": {
-          "device_reference": {
+          "device_id": {
             "type": "string",
             "format": "string",
             "example": "XXXXXX"
