@@ -345,7 +345,7 @@
         }
       }
     },
-    "/bike/last-position/": {
+    "/bike/last-position/{device_id}": {
       "get": {
         "tags": [
           "Bike"
@@ -358,14 +358,13 @@
         ],
         "parameters": [
           {
+            "in": "path",
             "name": "device_id",
-            "in": "query",
             "required": true,
-            "style": "form",
-            "explode": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "The device ID"
           }
         ],
         "responses": {
