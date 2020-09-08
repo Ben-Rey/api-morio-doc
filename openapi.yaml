@@ -215,7 +215,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/device_id_not_found_404"
 
-  /bike/last-position/:
+  /bike/last-position/{device_id}:
     get:
       tags:
         - Bike
@@ -223,13 +223,12 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: device_id
-          in: query
+        - in: path
+          name: device_id   # Note the name is the same as in the path
           required: true
-          style: form
-          explode: true
           schema:
             type: string
+          description: The device ID
       responses:
         "200":
           description: OK
