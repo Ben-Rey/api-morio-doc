@@ -1,0 +1,644 @@
+{
+	"info": {
+		"_postman_id": "614f4db1-2688-444f-9f0d-a2802eef17d5",
+		"name": "API-MORIO-CLIENTS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BIKE",
+			"item": [
+				{
+					"name": "Get Distances",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ec92f1c8-6a3c-450e-9666-8bb41178d1d5",
+								"exec": [
+									"var date = new Date();",
+									"var timestamp = date.getTime();",
+									"postman.setEnvironmentVariable('timestampNow',timestamp/1000);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/distance/?device_id=196C93&begin_timestamp=1580298250&end_timestamp={{timestampNow}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"distance",
+								""
+							],
+							"query": [
+								{
+									"key": "device_id",
+									"value": "196C93"
+								},
+								{
+									"key": "begin_timestamp",
+									"value": "1580298250"
+								},
+								{
+									"key": "end_timestamp",
+									"value": "{{timestampNow}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Bikes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": \n        [\n            {\n                \"device_id\": \"301555\",\n                \"device_name\": \"Pierre\",\n                \"device_information\": \"\"\n            }\n        ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/create-device/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"create-device",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete bikes",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": \n        [\n            {\n                \"device_id\": \"301555\"\n            }\n        ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/delete-device/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"delete-device",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change stolen status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"device_id\": \"301299\",\n    \"device_name\": \"Paul\",\n    \"device_stolen\": false,\n    \"email\": \"pierre@morio.co\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/stolen-device/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"stolen-device",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get device last position",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/last-position/300F53",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"last-position",
+								"300F53"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Count Zone traffic",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f1ab98c2-bec0-4a5e-aab5-98eff79fa670",
+								"exec": [
+									"var date = new Date();",
+									"var timestamp = date.getTime();",
+									"postman.setEnvironmentVariable('timestampNow',timestamp/1000);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/zone-traffic/?device_id=196C93&group=Entreprise&begin_timestamp=1580298250&end_timestamp={{timestampNow}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"zone-traffic",
+								""
+							],
+							"query": [
+								{
+									"key": "device_id",
+									"value": "196C93"
+								},
+								{
+									"key": "group",
+									"value": "Entreprise"
+								},
+								{
+									"key": "begin_timestamp",
+									"value": "1580298250"
+								},
+								{
+									"key": "end_timestamp",
+									"value": "{{timestampNow}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List bikes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/list_devices/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"list_devices",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List positions",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "872d85ef-fb5a-4794-8622-04d92bf2346a",
+								"exec": [
+									"var date = new Date();",
+									"var timestamp = date.getTime();",
+									"postman.setEnvironmentVariable('timestampNow', timestamp / 1000);",
+									"pm.environment.set(\"variable_key\", \"variable_value\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOiIyMDIwLTA5LTE2IDE1OjAzOjExLjY5NTA1OSswMDowMCIsInN1YiI6Im1hc3Rlcl9hcGlfa2V5In0.Nj4PaHCxLnFmUhRmIF7rFEhzJ1O5DAVz4-67U7C5Ip8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/list_positions/?device_id=300E97,301379&begin_timestamp=1585115088&end_timestamp=1587115088",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"list_positions",
+								""
+							],
+							"query": [
+								{
+									"key": "device_id",
+									"value": "300E97,301379"
+								},
+								{
+									"key": "begin_timestamp",
+									"value": "1585115088"
+								},
+								{
+									"key": "end_timestamp",
+									"value": "1587115088"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GROUP",
+			"item": [
+				{
+					"name": "Create group witt positions alerts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"group_name\": \"Entreprise\",\n\t\"latitude\": {{paris_lat}},\n\t\"longitude\": {{paris_lng}},\n\t\"radius\": 3\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/group/create-group-with-geofencing-alerts/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"group",
+								"create-group-with-geofencing-alerts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete group with alert",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"group_name\": \"Entreprise\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/group/delete-group-with-alert/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"group",
+								"delete-group-with-alert",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add devices in group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"group_name\": \"Entreprise\",\n    \"devices\": \n    [\n        {\n            \"device_id\": \"300F53\"\n        }\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/group/add-devices-in-group/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"group",
+								"add-devices-in-group",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove devices from group",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"group_name\":\"Entreprise\",\n    \"devices\": \n    [\n        {\n            \"device_id\": \"300F53\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/group/remove-devices-from-group/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"group",
+								"remove-devices-from-group",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ALERT",
+			"item": [
+				{
+					"name": "Create alert",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"position\",\n    \"alert_name\": \"zone4\",\n\t\"latitude\": {{paris_lat}},\n\t\"longitude\": {{paris_lng}},\n\t\"radius\": 0.025,\n    \"group_name\":\"Parc\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/alert/create-alert/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"alert",
+								"create-alert",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete alert",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"type": "text",
+								"value": "{{API_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"alert_name\": \"zone4\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/alert/delete-alert/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"alert",
+								"delete-alert",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
