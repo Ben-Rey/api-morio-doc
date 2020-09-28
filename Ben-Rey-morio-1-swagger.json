@@ -4,7 +4,11 @@
     "title": "Morio-api",
     "description": "API for connecting Morio service to your back office",
     "version": "1",
-    "x-logo": "https://res.cloudinary.com/morio/image/upload/v1599656878/logo/LOGO%20MORIO/logo-morio-rvb-fond-transparent.png"
+    "x-logo": {
+      "url": "https://res.cloudinary.com/morio/image/upload/v1599656878/logo/LOGO%20MORIO/logo-morio-rvb-fond-transparent.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Morio logo"
+    }
   },
   "servers": [
     {
