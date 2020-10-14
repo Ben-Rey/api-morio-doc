@@ -22,6 +22,31 @@
     }
   ],
   "paths": {
+    "/bike/list_devices": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Bike"
+        ],
+        "summary": "List all devices",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BikeListDevices"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bike/create-device": {
       "post": {
         "security": [
@@ -205,6 +230,87 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/distance_error_403"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bike/list_positions/": {
+      "get": {
+        "tags": [
+          "Bike"
+        ],
+        "summary": "Get postions between two timestamps (limit 1 month)",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "begin_timestamp",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "end_timestamp",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PositionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A key in the parameters is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list_positions_error_403"
                 }
               }
             }
@@ -733,6 +839,37 @@
           }
         }
       },
+      "Bikedevice": {
+        "type": "object",
+        "properties": {
+          "sigfox_reference": {
+            "type": "string",
+            "format": "string",
+            "example": 330012
+          },
+          "device_reference": {
+            "type": "string",
+            "format": "string",
+            "example": "v1"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date",
+            "example": "2020-10-11T00:00:00.000Z"
+          }
+        }
+      },
+      "BikeListDevices": {
+        "type": "object",
+        "properties": {
+          "devices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bikedevice"
+            }
+          }
+        }
+      },
       "BikeCreationList": {
         "type": "object",
         "properties": {
@@ -981,6 +1118,30 @@
           }
         }
       },
+      "PositionsResponse": {
+        "type": "object",
+        "properties": {
+          "30134B (device_id)": {
+            "properties": {
+              "latitude": {
+                "type": "number",
+                "format": "double",
+                "example": 43.577205
+              },
+              "longitude": {
+                "type": "number",
+                "format": "double",
+                "example": 1.47676
+              },
+              "timestamp": {
+                "type": "integer",
+                "format": "int32",
+                "example": 1597391346
+              }
+            }
+          }
+        }
+      },
       "inline_response_201_1": {
         "type": "object",
         "properties": {
@@ -1028,16 +1189,6 @@
             "type": "string",
             "format": "string",
             "example": "devices added"
-          }
-        }
-      },
-      "device_remove_from_group_404": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "devices X not found. If there were others, they were deleted."
           }
         }
       },
@@ -1099,6 +1250,16 @@
           }
         }
       },
+      "list_positions_error_403": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "format": "string",
+            "example": "More than one month between two timestamp"
+          }
+        }
+      },
       "CountResponse": {
         "type": "object",
         "properties": {
@@ -1111,47 +1272,6 @@
             "type": "integer",
             "format": "int32",
             "example": 1
-          }
-        }
-      },
-      "BikeDescription": {
-        "type": "object",
-        "properties": {
-          "device_id": {
-            "type": "string",
-            "format": "string",
-            "example": "00300456"
-          },
-          "device_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Poulidor"
-          },
-          "device_information": {
-            "type": "string",
-            "format": "string",
-            "example": "Velo 40"
-          }
-        }
-      },
-      "BikeId": {
-        "type": "object",
-        "properties": {
-          "device_id": {
-            "type": "string",
-            "format": "string",
-            "example": "00300456"
-          }
-        }
-      },
-      "BikeList": {
-        "type": "object",
-        "properties": {
-          "devices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BikeStolenList"
-            }
           }
         }
       }
