@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Morio-api",
-    "description": "API for connecting Morio service to your back office",
+    "description": "API for connecting Morio service to your back office\n\nDefault URL\\: `https://{workspace}.api.web.morio.co/developers`\n",
     "version": "1",
     "x-logo": {
       "url": "https://res.cloudinary.com/morio/image/upload/v1599656878/logo/LOGO%20MORIO/logo-morio-rvb-fond-transparent.png",
