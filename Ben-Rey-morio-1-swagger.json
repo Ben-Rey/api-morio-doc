@@ -24,11 +24,6 @@
   "paths": {
     "/bike/list_devices": {
       "get": {
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "tags": [
           "Bike"
         ],
@@ -44,16 +39,16 @@
               }
             }
           }
-        }
-      }
-    },
-    "/bike/create-device": {
-      "post": {
+        },
         "security": [
           {
             "ApiKeyAuth": []
           }
-        ],
+        ]
+      }
+    },
+    "/bike/create-device": {
+      "post": {
         "tags": [
           "Bike"
         ],
@@ -98,7 +93,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/bike/delete-device": {
@@ -107,11 +107,6 @@
           "Bike"
         ],
         "summary": "Delete bikes",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -152,7 +147,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/bike/distance/": {
@@ -161,22 +161,17 @@
           "Bike"
         ],
         "summary": "Get distance between two timestamps",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "device_id(s)",
             "in": "query",
+            "description": "comma separated",
             "required": true,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "string"
-            },
-            "description": "comma separated"
+            }
           },
           {
             "name": "begin_timestamp",
@@ -234,7 +229,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/bike/list_positions/": {
@@ -243,15 +243,11 @@
           "Bike"
         ],
         "summary": "Get postions between two timestamps (limit 1 month)",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "parameters": [
           {
-            "name": "device_id",
+            "name": "device_id(s)",
             "in": "query",
+            "description": "comma separated",
             "required": true,
             "style": "form",
             "explode": true,
@@ -315,7 +311,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/bike/zone-traffic": {
@@ -324,11 +325,6 @@
           "Bike"
         ],
         "summary": "Count bike zone entries and exits",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "device_id",
@@ -406,7 +402,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/bike/stolen-device": {
@@ -415,11 +416,6 @@
           "Bike"
         ],
         "summary": "Report bike stolen or found",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -453,7 +449,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/bike/last-position/{device_id}": {
@@ -462,20 +463,17 @@
           "Bike"
         ],
         "summary": "Get device last position",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "parameters": [
           {
-            "in": "path",
             "name": "device_id",
+            "in": "path",
+            "description": "The device ID",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
-            },
-            "description": "The device ID"
+            }
           }
         ],
         "responses": {
@@ -509,7 +507,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/group/create-group-with-geofencing-alerts": {
@@ -518,11 +521,6 @@
           "Group"
         ],
         "summary": "Add new group with geofencing",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -553,7 +551,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/group/delete-group-with-alert": {
@@ -562,11 +565,6 @@
           "Group"
         ],
         "summary": "Delete group",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -607,7 +605,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/group/add-devices-in-group": {
@@ -616,11 +619,6 @@
           "Group"
         ],
         "summary": "Add bikes inside a group",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -661,7 +659,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/group/remove-devices-from-group": {
@@ -670,11 +673,6 @@
           "Group"
         ],
         "summary": "Remove bikes from a group",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -708,7 +706,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/alert/create-alert": {
@@ -717,11 +720,6 @@
           "Alert"
         ],
         "summary": "Create new alert",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -752,7 +750,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/alert/delete-alert": {
@@ -761,11 +764,6 @@
           "Alert"
         ],
         "summary": "Delete alert",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -806,18 +804,16 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     }
   },
   "components": {
-    "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-MASTER-API-KEY"
-      }
-    },
     "schemas": {
       "BikeCreation": {
         "type": "object",
@@ -825,7 +821,7 @@
           "device_id": {
             "type": "string",
             "format": "string",
-            "example": 330012
+            "example": "330012"
           },
           "device_name": {
             "type": "string",
@@ -845,7 +841,7 @@
           "sigfox_reference": {
             "type": "string",
             "format": "string",
-            "example": 330012
+            "example": "330012"
           },
           "device_reference": {
             "type": "string",
@@ -854,8 +850,7 @@
           },
           "created_at": {
             "type": "string",
-            "format": "date",
-            "example": "2020-10-11T00:00:00.000Z"
+            "format": "date"
           }
         }
       },
@@ -887,7 +882,7 @@
           "device_id": {
             "type": "string",
             "format": "string",
-            "example": 330012
+            "example": "330012"
           }
         }
       },
@@ -1228,15 +1223,15 @@
           "result": {
             "type": "array",
             "format": "int32",
-            "items": {
-              "$ref": "#/components/schemas/BikeCreation"
-            },
             "example": [
               {
                 "id": "30134B",
                 "distance": 20
               }
-            ]
+            ],
+            "items": {
+              "$ref": "#/components/schemas/BikeCreation"
+            }
           }
         }
       },
@@ -1274,6 +1269,13 @@
             "example": 1
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "X-MASTER-API-KEY",
+        "in": "header"
       }
     }
   }
