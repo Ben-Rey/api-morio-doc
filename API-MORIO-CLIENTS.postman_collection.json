@@ -34,7 +34,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/distance/?device_id=196C93&begin_timestamp=1580298250&end_timestamp={{timestampNow}}",
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/distance/?device_id=300F17,315256&begin_timestamp=1602161581&end_timestamp={{timestampNow}}",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{workspace}}",
@@ -52,11 +52,11 @@
 							"query": [
 								{
 									"key": "device_id",
-									"value": "196C93"
+									"value": "300F17,315256"
 								},
 								{
 									"key": "begin_timestamp",
-									"value": "1580298250"
+									"value": "1602161581"
 								},
 								{
 									"key": "end_timestamp",
@@ -80,7 +80,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"devices\": \n        [\n            {\n                \"device_id\": \"301555\",\n                \"device_name\": \"Pierre\",\n                \"device_information\": \"\"\n            }\n        ]\n}\n",
+							"raw": "{\n    \"devices\": \n        [\n            {\n                \"device_id\": \"999888\",\n                \"device_name\": \"Pierre\",\n                \"device_information\": \"8711816000222\"\n            }\n        ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -101,6 +101,46 @@
 								"developers",
 								"bike",
 								"create-device",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update bike",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-MASTER-API-KEY",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"device_id\": \"999888\",\n\t\"device_information\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/update-device/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"bike",
+								"update-device",
 								""
 							]
 						}
@@ -199,7 +239,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/last-position/300F53",
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/bike/last-position/3151A3",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{workspace}}",
@@ -212,7 +252,14 @@
 								"developers",
 								"bike",
 								"last-position",
-								"300F53"
+								"3151A3"
+							],
+							"query": [
+								{
+									"key": "device_id",
+									"value": "3151A3",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -403,7 +450,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"group_name\": \"Entreprise\",\n\t\"latitude\": {{paris_lat}},\n\t\"longitude\": {{paris_lng}},\n\t\"radius\": 3\n}\n",
+							"raw": "{\n  \"group_name\": \"TTS\",\n  \"latitude\": 43.77308019449124,\n  \"longitude\": 7.20684063832655,\n  \"radius\": 101.69775212431162\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -590,6 +637,40 @@
 								"developers",
 								"alert",
 								"create-alert",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update alert",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"alert_name\": \"Bordeaux\",\n\t\"latitude\": 44.814471,\n\t\"longitude\": -0.505332,\n\t\"radius\": 5\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{workspace}}.api.{{environnement}}.morio.co/developers/alert/update-alert/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{workspace}}",
+								"api",
+								"{{environnement}}",
+								"morio",
+								"co"
+							],
+							"path": [
+								"developers",
+								"alert",
+								"update-alert",
 								""
 							]
 						}

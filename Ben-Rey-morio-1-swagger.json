@@ -101,6 +101,60 @@
         ]
       }
     },
+    "/bike/update-device": {
+      "put": {
+        "tags": [
+          "Bike"
+        ],
+        "summary": "Update existing device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BikeEdition"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A key in the json data is missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_key_missing_response_400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Alert name not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_id_not_found_404"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
     "/bike/delete-device": {
       "delete": {
         "tags": [
@@ -930,6 +984,26 @@
           }
         }
       },
+      "BikeEdition": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "format": "string",
+            "example": "300.0"
+          },
+          "device_name": {
+            "type": "string",
+            "format": "string",
+            "example": "Pierre"
+          },
+          "device_information": {
+            "type": "string",
+            "format": "string",
+            "example": "Lyon"
+          }
+        }
+      },
       "BikeDelete": {
         "type": "object",
         "properties": {
@@ -1303,6 +1377,16 @@
             "type": "string",
             "format": "string",
             "example": "alert updated"
+          }
+        }
+      },
+      "inline_response_200_4": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "format": "string",
+            "example": "device updated"
           }
         }
       },
