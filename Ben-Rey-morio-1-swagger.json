@@ -230,6 +230,7 @@
           {
             "name": "begin_timestamp",
             "in": "query",
+            "description": "timestamp in seconds",
             "required": true,
             "style": "form",
             "explode": true,
@@ -242,6 +243,7 @@
           {
             "name": "end_timestamp",
             "in": "query",
+            "description": "timestamp in seconds",
             "required": true,
             "style": "form",
             "explode": true,
@@ -312,6 +314,7 @@
           {
             "name": "begin_timestamp",
             "in": "query",
+            "description": "timestamp in seconds",
             "required": true,
             "style": "form",
             "explode": true,
@@ -324,6 +327,7 @@
           {
             "name": "end_timestamp",
             "in": "query",
+            "description": "timestamp in seconds",
             "required": true,
             "style": "form",
             "explode": true,
@@ -403,6 +407,7 @@
           {
             "name": "begin_timestamp",
             "in": "query",
+            "description": "timestamp in seconds",
             "required": true,
             "style": "form",
             "explode": true,
@@ -415,6 +420,7 @@
           {
             "name": "end_timestamp",
             "in": "query",
+            "description": "timestamp in seconds",
             "required": true,
             "style": "form",
             "explode": true,
@@ -1077,18 +1083,19 @@
           "latitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "latitude in decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "longitude in decimal degree",
             "example": 1.47676
           },
           "radius": {
             "type": "integer",
             "format": "int32",
+            "description": "radius in km",
             "example": 3
           }
         }
@@ -1119,18 +1126,19 @@
           "latitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "latitude in decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "longitude in decimal degree",
             "example": 1.47676
           },
           "radius": {
             "type": "integer",
             "format": "int32",
+            "description": "radius in km",
             "example": 3
           },
           "group_name": {
@@ -1151,18 +1159,19 @@
           "latitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "latitude in decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "longitude in decimal degree",
             "example": 1.47676
           },
           "radius": {
             "type": "integer",
             "format": "int32",
+            "description": "radius in km",
             "example": 3
           }
         }
@@ -1268,18 +1277,19 @@
           "latitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "latitude in decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
-            "description": "decimal degree",
+            "description": "longitude in decimal degree",
             "example": 1.47676
           },
           "timestamp": {
             "type": "integer",
             "format": "int32",
+            "description": "timestamp in seconds",
             "example": 1597391346
           }
         }
@@ -1292,18 +1302,19 @@
               "latitude": {
                 "type": "number",
                 "format": "double",
-                "description": "decimal degree",
+                "description": "latitude in decimal degree",
                 "example": 43.577205
               },
               "longitude": {
                 "type": "number",
                 "format": "double",
-                "description": "decimal degree",
+                "description": "longitude in decimal degree",
                 "example": 1.47676
               },
               "timestamp": {
                 "type": "integer",
                 "format": "int32",
+                "description": "timestamp in seconds",
                 "example": 1597391346
               }
             }
