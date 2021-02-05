@@ -1077,11 +1077,13 @@
           "latitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 1.47676
           },
           "radius": {
@@ -1117,11 +1119,13 @@
           "latitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 1.47676
           },
           "radius": {
@@ -1147,11 +1151,13 @@
           "latitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 1.47676
           },
           "radius": {
@@ -1262,11 +1268,13 @@
           "latitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 43.577205
           },
           "longitude": {
             "type": "number",
             "format": "double",
+            "description": "decimal degree",
             "example": 1.47676
           },
           "timestamp": {
@@ -1284,11 +1292,13 @@
               "latitude": {
                 "type": "number",
                 "format": "double",
+                "description": "decimal degree",
                 "example": 43.577205
               },
               "longitude": {
                 "type": "number",
                 "format": "double",
+                "description": "decimal degree",
                 "example": 1.47676
               },
               "timestamp": {
