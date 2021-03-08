@@ -48,6 +48,16 @@
       "get" : {
         "tags" : [ "Bike" ],
         "summary" : "Get bike ref (sigfoxId) from bike name",
+        "parameters" : [ {
+          "name" : "bike name",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
         "responses" : {
           "200" : {
             "description" : "response",
