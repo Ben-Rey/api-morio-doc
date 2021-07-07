@@ -1,1356 +1,870 @@
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Morio-api",
-    "description": "API for connecting Morio service to your back office",
-    "version": "1",
-    "x-logo": {
-      "url": "https://res.cloudinary.com/morio/image/upload/v1599656878/logo/LOGO%20MORIO/logo-morio-rvb-fond-transparent.png",
-      "backgroundColor": "#FFFFFF",
-      "altText": "Morio logo"
-    }
-  },
-  "servers": [
-    {
-      "url": "https://{workspace}.api.web.morio.co/developers",
-      "variables": {
-        "workspace": {
-          "description": "workspace assigned by Morio",
-          "default": "demo"
-        }
-      }
-    }
-  ],
-  "paths": {
-    "/bike/list_devices": {
-      "get": {
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "tags": [
-          "Bike"
-        ],
-        "summary": "List all devices",
-        "responses": {
-          "200": {
-            "description": "response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BikeListDevices"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/create-device": {
-      "post": {
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Add new bikes",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BikeCreationList"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/device_created_response_201"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A key in the json data is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/device_created_error_response_404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/delete-device": {
-      "delete": {
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Delete bikes",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BikeDeleteList"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A key in the json data is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/device_delete_404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/distance/": {
-      "get": {
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Get distance between two timestamps",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "device_id(s)",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "comma separated"
-          },
-          {
-            "name": "begin_timestamp",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "end_timestamp",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DistanceResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A key in the parameters is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Limit exceeded",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/distance_error_403"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/list_positions/": {
-      "get": {
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Get postions between two timestamps (limit 1 month)",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "device_id",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "begin_timestamp",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "end_timestamp",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PositionsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A key in the parameters is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Limit exceeded",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/list_positions_error_403"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/zone-traffic": {
-      "get": {
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Count bike zone entries and exits",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "device_id",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "group",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "begin_timestamp",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "end_timestamp",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CountResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A key in the parameters is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/device_id_not_found_404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/stolen-device": {
-      "post": {
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Report bike stolen or found",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BikeStolenList"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Bike stolen or found"
-          },
-          "400": {
-            "description": "A key in the json data is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/device_id_not_found_404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/last-position/{device_id}": {
-      "get": {
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Get device last position",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "device_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The device ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PositionResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A parameter is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/device_id_not_found_404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bike/battery-level/{device_id}": {
-      "get": {
-        "tags": [
-          "Bike"
-        ],
-        "summary": "Get device last position",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "device_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The device ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BatteryResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A parameter is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Battery_level_unknown_404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/group/create-group-with-geofencing-alerts": {
-      "post": {
-        "tags": [
-          "Group"
-        ],
-        "summary": "Add new group with geofencing",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GroupCreation"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_201_1"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_409"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/group/delete-group-with-alert": {
-      "delete": {
-        "tags": [
-          "Group"
-        ],
-        "summary": "Delete group",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Group"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_1"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A parameter is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_404_3"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/group/add-devices-in-group": {
-      "post": {
-        "tags": [
-          "Group"
-        ],
-        "summary": "Add bikes inside a group",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddBikesList"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_201_2"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A key in the json data is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_404_3"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/group/remove-devices-from-group": {
-      "post": {
-        "tags": [
-          "Group"
-        ],
-        "summary": "Remove bikes from a group",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddBikesList"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "All bikes removed"
-          },
-          "400": {
-            "description": "A key in the json data is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Group not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/group_name_not_found_404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/alert/create-alert": {
-      "post": {
-        "tags": [
-          "Alert"
-        ],
-        "summary": "Create new alert",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlertCreation"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_201_3"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A key in the json data is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/alert/delete-alert": {
-      "delete": {
-        "tags": [
-          "Alert"
-        ],
-        "summary": "Delete alert",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlertName"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_2"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "A parameter is missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error_key_missing_response_400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_404_4"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-MASTER-API-KEY"
-      }
-    },
-    "schemas": {
-      "BikeCreation": {
-        "type": "object",
-        "properties": {
-          "device_id": {
-            "type": "string",
-            "format": "string",
-            "example": 330012
-          },
-          "device_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Poulidor"
-          },
-          "device_information": {
-            "type": "string",
-            "format": "string",
-            "example": "information"
-          }
-        }
-      },
-      "Bikedevice": {
-        "type": "object",
-        "properties": {
-          "sigfox_reference": {
-            "type": "string",
-            "format": "string",
-            "example": 330012
-          },
-          "device_reference": {
-            "type": "string",
-            "format": "string",
-            "example": "v1"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date",
-            "example": "2020-10-11T00:00:00.000Z"
-          }
-        }
-      },
-      "BikeListDevices": {
-        "type": "object",
-        "properties": {
-          "devices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Bikedevice"
-            }
-          }
-        }
-      },
-      "BikeCreationList": {
-        "type": "object",
-        "properties": {
-          "devices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BikeCreation"
-            }
-          }
-        }
-      },
-      "BikeDelete": {
-        "type": "object",
-        "properties": {
-          "device_id": {
-            "type": "string",
-            "format": "string",
-            "example": 330012
-          }
-        }
-      },
-      "BikeDeleteList": {
-        "type": "object",
-        "properties": {
-          "devices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BikeDelete"
-            }
-          }
-        }
-      },
-      "AddBikesList": {
-        "type": "object",
-        "properties": {
-          "group_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Entreprise"
-          },
-          "devices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BikeStolenList"
-            }
-          }
-        }
-      },
-      "BikeStolenList": {
-        "type": "object",
-        "properties": {
-          "device_id": {
-            "type": "string",
-            "format": "string",
-            "example": "00300456"
-          },
-          "device_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Poulidor"
-          },
-          "device_stolen": {
-            "type": "string",
-            "format": "string",
-            "example": "true"
-          },
-          "email": {
-            "type": "string",
-            "format": "string",
-            "example": "adrien@morio.co"
-          }
-        }
-      },
-      "GroupCreation": {
-        "type": "object",
-        "properties": {
-          "group_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Entreprise"
-          },
-          "latitude": {
-            "type": "number",
-            "format": "double",
-            "example": 43.577205
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double",
-            "example": 1.47676
-          },
-          "radius": {
-            "type": "integer",
-            "format": "int32",
-            "example": 3
-          }
-        }
-      },
-      "Group": {
-        "type": "object",
-        "properties": {
-          "group_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Entreprise"
-          }
-        }
-      },
-      "AlertCreation": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "format": "string",
-            "example": "position"
-          },
-          "alert_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Zone4"
-          },
-          "latitude": {
-            "type": "number",
-            "format": "double",
-            "example": 43.577205
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double",
-            "example": 1.47676
-          },
-          "radius": {
-            "type": "integer",
-            "format": "int32",
-            "example": 3
-          },
-          "group_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Parc"
-          }
-        }
-      },
-      "AlertName": {
-        "type": "object",
-        "properties": {
-          "alert_name": {
-            "type": "string",
-            "format": "string",
-            "example": "Zone4"
-          }
-        }
-      },
-      "error_key_missing_response_400": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "X key is missing"
-          }
-        }
-      },
-      "group_name_not_found_404": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "Group name not found"
-          }
-        }
-      },
-      "device_id_not_found_404": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "device_id not found"
-          }
-        }
-      },
-      "device_created_response_201": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "device(s) has been created"
-          }
-        }
-      },
-      "device_created_error_response_404": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "devices X was/were already created. If there were others, they were created."
-          }
-        }
-      },
-      "inline_response_200": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "devices deleted"
-          }
-        }
-      },
-      "device_delete_404": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "devices X not found. If there were others, they were deleted."
-          }
-        }
-      },
-      "BatteryResponse": {
-        "type": "object",
-        "properties": {
-          "battery_level": {
-            "type": "integer",
-            "format": "integer",
-            "example": 45
-          }
-        }
-      },
-      "Battery_level_unknown_404": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "The battery level is not available"
-          }
-        }
-      },
-      "PositionResponse": {
-        "type": "object",
-        "properties": {
-          "device_id": {
-            "type": "string",
-            "format": "string",
-            "example": "XXXXXX"
-          },
-          "latitude": {
-            "type": "number",
-            "format": "double",
-            "example": 43.577205
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double",
-            "example": 1.47676
-          },
-          "timestamp": {
-            "type": "integer",
-            "format": "int32",
-            "example": 1597391346
-          }
-        }
-      },
-      "PositionsResponse": {
-        "type": "object",
-        "properties": {
-          "30134B (device_id)": {
-            "properties": {
-              "latitude": {
-                "type": "number",
-                "format": "double",
-                "example": 43.577205
-              },
-              "longitude": {
-                "type": "number",
-                "format": "double",
-                "example": 1.47676
-              },
-              "timestamp": {
-                "type": "integer",
-                "format": "int32",
-                "example": 1597391346
-              }
-            }
-          }
-        }
-      },
-      "inline_response_201_1": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "group created"
-          }
-        }
-      },
-      "inline_response_409": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "A group with this name already exists"
-          }
-        }
-      },
-      "inline_response_200_1": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "Group deleted"
-          }
-        }
-      },
-      "inline_response_404_3": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "Group name not found"
-          }
-        }
-      },
-      "inline_response_201_2": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "devices added"
-          }
-        }
-      },
-      "inline_response_201_3": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "alert created"
-          }
-        }
-      },
-      "inline_response_200_2": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "alert deleted"
-          }
-        }
-      },
-      "inline_response_404_4": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "Alert name not found."
-          }
-        }
-      },
-      "DistanceResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "format": "int32",
-            "items": {
-              "$ref": "#/components/schemas/BikeCreation"
-            },
-            "example": [
-              {
-                "id": "30134B",
-                "distance": 20
-              }
-            ]
-          }
-        }
-      },
-      "distance_error_403": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "limit exceeded ( 1 - 100 ) you gave X "
-          }
-        }
-      },
-      "list_positions_error_403": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "format": "string",
-            "example": "More than one month between two timestamp"
-          }
-        }
-      },
-      "CountResponse": {
-        "type": "object",
-        "properties": {
-          "entries": {
-            "type": "integer",
-            "format": "int32",
-            "example": 1
-          },
-          "exits": {
-            "type": "integer",
-            "format": "int32",
-            "example": 1
-          }
-        }
-      }
-    }
-  }
-}
+openapi: 3.0.0
+info:
+  title: Morio-api
+  description: API for connecting Morio service to your back office
+  version: "1"
+  x-logo:
+    url: "https://res.cloudinary.com/morio/image/upload/v1599656878/logo/LOGO%20MORIO/logo-morio-rvb-fond-transparent.png"
+    backgroundColor: "#FFFFFF"
+    altText: Morio logo
+servers:
+  - url: "https://{workspace}.api.web.morio.co/developers"
+    variables:
+      workspace:
+        description: workspace assigned by Morio
+        default: demo
+paths:
+  /bike/list_devices:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Bike
+      summary: List all devices
+      responses:
+        "200":
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BikeListDevices"
+  /bike/create-device:
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Bike
+      summary: Add new bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BikeCreationList"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_created_response_201"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_created_error_response_404"
+  /bike/delete-device:
+    delete:
+      tags:
+        - Bike
+      summary: Delete bikes
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BikeDeleteList"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_delete_404"
+  /bike/distance/:
+    get:
+      tags:
+        - Bike
+      summary: Get distance between two timestamps
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: device_id(s)
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+          description: comma separated
+        - name: begin_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: end_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DistanceResponse"
+        "400":
+          description: A key in the parameters is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "403":
+          description: Limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/distance_error_403"
+  /bike/list_positions/:
+    get:
+      tags:
+        - Bike
+      summary: Get postions between two timestamps (limit 1 month)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: device_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: begin_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: end_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PositionsResponse"
+        "400":
+          description: A key in the parameters is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "403":
+          description: Limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/list_positions_error_403"
+  /bike/zone-traffic:
+    get:
+      tags:
+        - Bike
+      summary: Count bike zone entries and exits
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: device_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: begin_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: end_timestamp
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountResponse"
+        "400":
+          description: A key in the parameters is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_id_not_found_404"
+  /bike/stolen-device:
+    post:
+      tags:
+        - Bike
+      summary: Report bike stolen or found
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BikeStolenList"
+      responses:
+        "200":
+          description: Bike stolen or found
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_id_not_found_404"
+  "/bike/last-position/{device_id}":
+    get:
+      tags:
+        - Bike
+      summary: Get device last position
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: device_id
+          required: true
+          schema:
+            type: string
+          description: The device ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PositionResponse"
+        "400":
+          description: A parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/device_id_not_found_404"
+  "/bike/battery-level/{device_id}":
+    get:
+      tags:
+        - Bike
+      summary: Get device battery level
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: device_id
+          required: true
+          schema:
+            type: string
+          description: The device ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/BatteryResponse"
+                  
+                
+        "400":
+          description: A parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Battery_level_unknown_404"
+
+  /group/create-group-with-geofencing-alerts:
+    post:
+      tags:
+        - Group
+      summary: Add new group with geofencing
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupCreation"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_201_1"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_409"
+  /group/delete-group-with-alert:
+    delete:
+      tags:
+        - Group
+      summary: Delete group
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Group"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_1"
+        "400":
+          description: A parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404_3"
+  /group/add-devices-in-group:
+    post:
+      tags:
+        - Group
+      summary: Add bikes inside a group
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddBikesList"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_201_2"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404_3"
+  /group/remove-devices-from-group:
+    post:
+      tags:
+        - Group
+      summary: Remove bikes from a group
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddBikesList"
+      responses:
+        "200":
+          description: All bikes removed
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/group_name_not_found_404"
+  /alert/create-alert:
+    post:
+      tags:
+        - Alert
+      summary: Create new alert
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlertCreation"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_201_3"
+        "400":
+          description: A key in the json data is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+  /alert/delete-alert:
+    delete:
+      tags:
+        - Alert
+      summary: Delete alert
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlertName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_2"
+        "400":
+          description: A parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_key_missing_response_400"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404_4"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-MASTER-API-KEY
+  schemas:
+    BikeCreation:
+      type: object
+      properties:
+        device_id:
+          type: string
+          format: string
+          example: 330012
+        device_name:
+          type: string
+          format: string
+          example: Poulidor
+        device_information:
+          type: string
+          format: string
+          example: information
+    Bikedevice:
+      type: object
+      properties:
+        sigfox_reference:
+          type: string
+          format: string
+          example: 330012
+        device_reference:
+          type: string
+          format: string
+          example: v1
+        created_at:
+          type: string
+          format: date
+          example: 2020-10-11
+    BikeListDevices:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bikedevice"
+    BikeCreationList:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: "#/components/schemas/BikeCreation"
+    BikeDelete:
+      type: object
+      properties:
+        device_id:
+          type: string
+          format: string
+          example: 330012
+    BikeDeleteList:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: "#/components/schemas/BikeDelete"
+    AddBikesList:
+      type: object
+      properties:
+        group_name:
+          type: string
+          format: string
+          example: Entreprise
+        devices:
+          type: array
+          items:
+            $ref: "#/components/schemas/BikeStolenList"
+    BikeStolenList:
+      type: object
+      properties:
+        device_id:
+          type: string
+          format: string
+          example: "00300456"
+        device_name:
+          type: string
+          format: string
+          example: Poulidor
+        device_stolen:
+          type: string
+          format: string
+          example: "true"
+        email:
+          type: string
+          format: string
+          example: adrien@morio.co
+    GroupCreation:
+      type: object
+      properties:
+        group_name:
+          type: string
+          format: string
+          example: Entreprise
+        latitude:
+          type: number
+          format: double
+          example: 43.577205
+        longitude:
+          type: number
+          format: double
+          example: 1.47676
+        radius:
+          type: integer
+          format: int32
+          example: 3
+    Group:
+      type: object
+      properties:
+        group_name:
+          type: string
+          format: string
+          example: Entreprise
+    AlertCreation:
+      type: object
+      properties:
+        type:
+          type: string
+          format: string
+          example: position
+        alert_name:
+          type: string
+          format: string
+          example: Zone4
+        latitude:
+          type: number
+          format: double
+          example: 43.577205
+        longitude:
+          type: number
+          format: double
+          example: 1.47676
+        radius:
+          type: integer
+          format: int32
+          example: 3
+        group_name:
+          type: string
+          format: string
+          example: Parc
+    AlertName:
+      type: object
+      properties:
+        alert_name:
+          type: string
+          format: string
+          example: Zone4
+    error_key_missing_response_400:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: X key is missing
+    group_name_not_found_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: Group name not found
+    device_id_not_found_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: device_id not found
+    device_created_response_201:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: device(s) has been created
+    device_created_error_response_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: "devices X was/were already created. If there were others, they were created."
+    inline_response_200:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: devices deleted
+    device_delete_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: "devices X not found. If there were others, they were deleted."
+    BatteryResponse:
+      type: object
+      properties:
+        battery_level:
+          type: integer
+          format: integer
+          example: 45
+    Battery_level_unknown_404:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: "The battery level is not available"
+
+
+    PositionResponse:
+      type: object
+      properties:
+        device_id:
+          type: string
+          format: string
+          example: XXXXXX
+        latitude:
+          type: number
+          format: double
+          example: 43.577205
+        longitude:
+          type: number
+          format: double
+          example: 1.47676
+        timestamp:
+          type: integer
+          format: int32
+          example: 1597391346
+    PositionsResponse:
+      type: object
+      properties:
+        30134B (device_id):
+          properties:
+            latitude:
+              type: number
+              format: double
+              example: 43.577205
+            longitude:
+              type: number
+              format: double
+              example: 1.47676
+            timestamp:
+              type: integer
+              format: int32
+              example: 1597391346
+    inline_response_201_1:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: group created
+    inline_response_409:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: A group with this name already exists
+    inline_response_200_1:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: Group deleted
+    inline_response_404_3:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: Group name not found
+    inline_response_201_2:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: devices added
+    inline_response_201_3:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: alert created
+    inline_response_200_2:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: alert deleted
+    inline_response_404_4:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: Alert name not found.
+    DistanceResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          format: int32
+          items:
+            $ref: "#/components/schemas/BikeCreation"
+          example:
+            - id: 30134B
+              distance: 20
+    distance_error_403:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: "limit exceeded ( 1 - 100 ) you gave X "
+    list_positions_error_403:
+      type: object
+      properties:
+        message:
+          type: string
+          format: string
+          example: "More than one month between two timestamp"
+    CountResponse:
+      type: object
+      properties:
+        entries:
+          type: integer
+          format: int32
+          example: 1
+        exits:
+          type: integer
+          format: int32
+          example: 1
